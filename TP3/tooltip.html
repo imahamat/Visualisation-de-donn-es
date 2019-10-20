@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+<!-- Load d3.js and the geo projection plugin -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<!-- Create an element where the map will take place -->
+<div id="my_dataviz"></div>
+
+<style>
+.circle:hover{
+  stroke: black;
+  stroke-width: 4px;
+}
+</style>
+</head>
+
+
+<body>
+  <script>
+
+  // Size ?
+  var width = 1200
+  var height = 1000
+
+  // The svg
+  var svg = d3.select("#my_dataviz")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+  // Map and projection
+  var projection = d3.geoMercator()
+      .center([1.4437,43.6043])                // GPS of location to zoom on
+      .scale([190020])                       // This is like the zoom
+      .translate([ width/2, height/2 ])
+
+  // Create data for circles:
+  var markers = [
+    {long: 1.40955548, lat: 43.60445904, name: "Adagos"}, // corsica
+    {long: 1.4508363, lat: 43.60129826, name: "Aqsone"}, // nice
+    {long: 1.415531693, lat: 43.61231009, name: "BigHappy"}, // Paris
+    {long: 1.455036869, lat: 43.60403838, name: "Botdesign"}, // Hossegor
+    {long: 1.442677637, lat: 43.60944939, name: "Lille"}, // Lille
+    {long: 1.413696156, lat: 43.57038152, name: "Morlaix"}, // Morlaix
+    {long: 1.426568333, lat: 43.59413142, name: "Corpus"}, // Corpus
+    {long: 1.432359973, lat: 43.63314372, name: "datactik"}, // datactik
+    {long: 1.395521428, lat: 43.57745794, name: "DataPy"}, // DataPy
+    {long: 1.444424024, lat: 43.62067998, name: "Delair"}, // Delair
+    {long: 1.398156214, lat: 43.56514176, name: "DEXSTR"}, // DEXSTR
+    {long: 1.405170219, lat: 43.57277019, name: "Earthcube"}, // Earthcube
+    {long: 1.403196451, lat: 43.56841686, name: "EasyMile"}, // EasyMile
+    {long: 1.453541585, lat: 43.54532292, name: "Edisys"}, // Edisys
+    {long: 1.40635898, lat: 43.60095056, name: "Elter"}, // Elter
+    {long: 1.384513012, lat: 43.55006987, name: "Ephod"},// Ephod
+    {long: 1.372137825, lat: 43.56728841, name: "Ffly4u"},// Ffly4u
+    {long: 1.438394224, lat: 43.57719792, name: "Flightwatching"},// Flightwatching
+    {long: 1.467542758, lat: 43.62979116, name: "Flipr"},// Flipr
+    {long: 1.439761661, lat: 43.65416497, name: "Geotrend"},// Geotrend
+    {long: 1.442108045, lat: 43.60718316, name: "Goa Soft SAS"},// Goa Soft SAS ,
+    {long: 1.447508557, lat: 43.64120351, name: "Gogowego"},// Gogowego,,
+    {long: 1.46439215, lat: 43.59654939, name: "HD Rain"},// HD Rain,,
+    {long: 1.464339882, lat: 43.57480327, name: "HUBWARE"},// HUBWARE,,
+    {long: 1.369788222, lat: 43.60122328, name: "Inbenta"},// Inbenta,,
+    {long: 1.412436157, lat: 43.56451373, name: "INNOSIDE"},// INNOSIDE,,
+    {long: 1.454936275, lat: 43.64116695, name: "Inukshuk"},// Inukshuk,,
+    {long: 1.398305378, lat: 43.56040428, name: "Itrust"},// Itrust,,
+    {long: 1.408441759, lat: 43.57984906, name: "Jolibrain"},// Jolibrain,,
+    {long: 1.453790517, lat: 43.61648918, name: "Kaduceo"},// Kaduceo,,
+    {long: 1.467788636, lat: 43.59981361, name: "Kocliko"},// Kocliko,,
+    {long: 1.485618355, lat: 43.58350922, name: "Konexinc"},// Konexinc,,
+    {long: 1.443218385, lat: 43.63668228, name: "Ksaar solutions"},// Ksaar solutions,,
+    {long: 1.476012868, lat: 43.58208032, name: "Liberty Rider"},// Liberty Rider,,
+    {long: 1.477442471, lat: 43.60734747, name: "Linogora GSO"},// Linogora GSO,,
+    {long: 1.402636559, lat: 43.56833647, name: "Mews Partners"},// Mews Partners,,
+    {long: 1.441604299, lat: 43.60178388, name: "Naïo Technologies"},// Naïo Technologies,,
+    {long: 1.442750161, lat: 43.59359189, name: "OneLight Studio"},// OneLight Studio,,
+    {long: 1.443008975, lat: 43.59704635, name: "OpenAirlines"},// OpenAirlines,,
+    {long: 1.398508048, lat: 43.56067183, name: "PAARLY"},// PAARLY,,
+    {long: 1.402548685, lat: 43.57356992, name: "PIXIENCE"},// PIXIENCE,,
+    {long: 1.40909637, lat: 43.61638034, name: "Pixstart"},// Pixstart,,
+    {long: 1.436063582, lat: 43.61930248, name: "Poolcare"},// Poolcare ,,
+    {long: 1.419235542, lat: 43.5891675, name: "Sigfox"},// Sigfox,,
+    {long: 1.407223036, lat: 43.58415437, name: "Simsoft Industry"},// Simsoft Industry,,
+    {long: 1.466719825, lat: 43.62646394, name: "STACK LABS"},// STACK LABS,,
+    {long: 1.431855311, lat: 43.59895554, name: "SUNiBrain"},// SUNiBrain,,
+    {long: 1.468140439, lat: 43.60767625, name: "Synapse Développement"},// Synapse Développement,,
+    {long: 1.463096267, lat: 43.63698109, name: "Telegrafik"},// Telegrafik,,
+    {long: 1.438482414, lat: 43.62126599, name: "TerraNIS"},// TerraNIS,,
+    {long: 1.403192823, lat: 43.56527425, name: "Trimane Sud Ouest"},// ,,
+    {long: 1.444252607, lat: 43.58712515, name: "WeatherForce"}// WeatherForce,,
+  ];
+
+  // Load external data and boot
+  d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson", function(data){
+
+      // Filter data
+      data.features = data.features.filter( function(d){return d.properties.name=="France"} )
+
+      // Draw the map
+      svg.append("g")
+          .selectAll("path")
+          .data(data.features)
+          .enter()
+          .append("path")
+            .attr("fill", "#b8b8b8")
+            .attr("d", d3.geoPath()
+                .projection(projection)
+            )
+          .style("stroke", "black")
+          .style("opacity", .3)
+
+      // create a tooltip
+      var Tooltip = d3.select("#my_dataviz")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 1)
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+
+      // Three function that change the tooltip when user hover / move / leave a cell
+      var mouseover = function(d) {
+        Tooltip.style("opacity", 1)
+      }
+      var mousemove = function(d) {
+        Tooltip
+          .html(d.name + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat)
+          .style("left", (d3.mouse(this)[0]+10) + "px")
+          .style("top", (d3.mouse(this)[1]) + "px")
+      }
+      var mouseleave = function(d) {
+        Tooltip.style("opacity", 0)
+      }
+
+      // Add circles:
+      svg
+        .selectAll("myCircles")
+        .data(markers)
+        .enter()
+        .append("circle")
+          .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
+          .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
+          .attr("r", 14)
+          .attr("class", "circle")
+          .style("fill", "69b3a2")
+          .attr("stroke", "#69b3a2")
+          .attr("stroke-width", 3)
+          .attr("fill-opacity", .4)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
+  })
+
+  </script>
+</body>
+
+</html>

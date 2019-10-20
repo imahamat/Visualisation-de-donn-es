@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ESILV - TP2</title>
+    <script type="text/javascript" src="js/d3.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        /// Load data
+         d3.select("body")
+            .selectAll("p")
+            .data([4, 8, 15, 16, 23, 42])
+            .enter().append("p")
+            .text(function (d,i) { return "index "+i+" !   I’m number " + d + "!"; });
+
+        // Update…
+        d3.select("body")
+            .selectAll("p")
+            .data([4, 8, 15, 16, 23, 42])
+            .text(function (d) { return d; });
+
+        // Enter…
+        d3.select("body")
+            .selectAll("p")
+            .data([4, 8, 15, 16, 23, 42,73])
+            .enter()
+            .append("p")
+            .text(function (d) { return d; });
+
+        // Exit…
+        d3.selectAll("p")
+            .data([4, 8, 15, 16])
+            .exit()
+            .remove();
+
+    </script>
+</body>
+
+</html>
