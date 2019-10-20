@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ESILV - TP2</title>
+    <script type="text/javascript" src="js/d3.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/titanic.css">
+</head>
+
+<body>
+    <script type="text/javascript">
+
+
+var titanic = [];
+        // Load titanic Data
+     d3.csv("data/titanic.csv",function(data) {
+            console.log(data);
+           titanic = data;
+            graph1(data);
+        });
+
+        // Graphique nuage de points
+       var graph1 = function (titanic) {
+            console.log(titanic)
+
+            var width = 1200;
+            var height = 600
+
+            //Create SVG element
+            var svg = d3.select("body")
+               .append("svg")
+               .attr("width", width)
+               .attr("height", height);
+
+
+      svg.selectAll()
+        .data(titanic)
+        .enter()
+        .append("circle")
+        .attr("cx",function(data){ return data.Age;})
+        .attr("cy", function(data){ return data.Fare;})
+        .attr("r", 3.5);
+
+        var x = d3.scaleLinear().range([0, width]).domain([0,titanic.Age]);  // ECHELLE AXE X
+        var y = d3.scaleLinear().range([height, 0]).domain([0, titanic.Fare]);   // ECHELLE AXE Y
+
+      };
+
+
+
+    </script>
+</body>
+
+</html>

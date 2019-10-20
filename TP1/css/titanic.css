@@ -1,0 +1,14 @@
+html, body {
+    margin: 0;
+    height: 100%
+  }
+  
+.dead  { 
+  opacity: .25; 
+}
+
+.alive { 
+  opacity: 1.; 
+  fill-opacity:.01; 
+  stroke: black; 
+}
